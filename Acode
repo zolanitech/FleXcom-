@@ -1,0 +1,71 @@
+<!-- 💼 TAB 2: ONLINE JOBS FEED (Matching your screenshots) -->
+<div id="tab-jobs" class="tab-content">
+    
+    <!-- Header Text -->
+    <h1 style="font-size: 2rem; font-weight: bold; margin: 0 0 6px 0; color: #ffffff;">Online Jobs</h1>
+    <p style="color: #888888; font-size: 0.95rem; margin: 0 0 16px 0; line-height: 1.4;">Remote gigs from South African companies</p>
+
+    <!-- Search & Filter Bar (Matching your interface design) -->
+    <div style="position: relative; margin-bottom: 16px;">
+        <span class="material-icons" style="position: absolute; left: 14px; top: 14px; color: #666;">search</span>
+        <input type="text" placeholder="Search title, tags, province or city" style="width: 100%; background-color: #0c0c0c; border: 1px solid #222; border-radius: 25px; padding: 14px 14px 14px 44px; color: #fff; box-sizing: border-box; font-size: 0.95rem; outline: none;">
+    </div>
+
+    <!-- Quick Pill Filters (Matching your screenshot) -->
+    <div style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 24px; padding-bottom: 4px;">
+        <span style="background-color: #111; border: 1px solid #179ba1; color: #179ba1; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; white-space: nowrap;">Verified Only</span>
+        <span style="background-color: #111; border: 1px solid #222; color: #aaa; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; white-space: nowrap;">Remote SA</span>
+        <span style="background-color: #111; border: 1px solid #222; color: #aaa; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; white-space: nowrap;">Fixed Price</span>
+    </div>
+
+    <!-- JOB CARD 1: Junior Social Media Content Creator -->
+    <div class="job-card" style="background-color: #0c0c0c; border: 1px solid #222; border-radius: 12px; padding: 16px; margin-bottom: 16px; font-family: -apple-system, sans-serif;">
+        <h3 style="margin: 0 0 4px 0; font-size: 1.2rem; color: #ffffff; font-weight: bold;">Junior Social Media Content Creator</h3>
+        <div style="color: #888888; font-size: 0.85rem; margin-bottom: 12px; display: flex; align-items: center; gap: 4px;">
+            <span class="material-icons" style="font-size: 16px;">location_on</span> Remote / Select a city
+        </div>
+        
+        <!-- Blue Price/Rate Badge (Matching your exact screenshot style) -->
+        <div style="display: inline-block; background-color: #0056b3; color: #ffffff; font-size: 0.8rem; font-weight: bold; padding: 6px 12px; border-radius: 6px; margin-bottom: 14px;">
+            Rate on request
+        </div>
+
+        <p style="margin: 0 0 16px 0; color: #b0b0b0; font-size: 0.9rem; line-height: 1.4;">Design and schedule social posts for local retail brands. Create simple static graphics, carousels, and captions using Canva.</p>
+        
+        <!-- Direct Action Buttons -->
+        <div style="display: flex; gap: 16px; align-items: center;">
+            <a href="https://wa.me." target="_blank" style="display: flex; align-items: center; gap: 6px; color: #179ba1; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                <span class="material-icons" style="font-size: 18px;">chat</span> Chat on WhatsApp
+            </a>
+            <a href="mailto:applications@flexxcom.co.za?subject=Application:%20Junior%20Social%20Media%20Content%20Creator" style="display: flex; align-items: center; gap: 6px; color: #179ba1; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                <span class="material-icons" style="font-size: 18px;">mail_outline</span> Apply via Email
+            </a>
+        </div>
+    </div>
+
+    <!-- JOB CARD 2: Virtual Assistant -->
+    <div class="job-card" style="background-color: #0c0c0c; border: 1px solid #222; border-radius: 12px; padding: 16px; margin-bottom: 16px; font-family: -apple-system, sans-serif;">
+        <h3 style="margin: 0 0 4px 0; font-size: 1.2rem; color: #ffffff; font-weight: bold;">Virtual Assistant</h3>
+        <div style="color: #888888; font-size: 0.85rem; margin-bottom: 12px; display: flex; align-items: center; gap: 4px;">
+            <span class="material-icons" style="font-size: 16px;">location_on</span> Remote / Select a city
+        </div>
+        
+        <!-- Blue Price/Rate Badge -->
+        <div style="display: inline-block; background-color: #0056b3; color: #ffffff; font-size: 0.8rem; font-weight: bold; padding: 6px 12px; border-radius: 6px; margin-bottom: 14px;">
+            Rate on request
+        </div>
+
+        <p style="margin: 0 0 16px 0; color: #b0b0b0; font-size: 0.9rem; line-height: 1.4;">Manage scheduling, data entry, calendar organization, client feedback handling, and routine customer correspondence.</p>
+        
+        <!-- Direct Action Buttons -->
+        <div style="display: flex; gap: 16px; align-items: center;">
+            <a href="https://wa.me." target="_blank" style="display: flex; align-items: center; gap: 6px; color: #179ba1; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                <span class="material-icons" style="font-size: 18px;">chat</span> Chat on WhatsApp
+            </a>
+            <a href="mailto:applications@flexxcom.co.za?subject=Application:%20Virtual%20Assistant" style="display: flex; align-items: center; gap: 6px; color: #179ba1; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                <span class="material-icons" style="font-size: 18px;">mail_outline</span> Apply via Email
+            </a>
+        </div>
+    </div>
+
+</div>
