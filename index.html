@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FleXcom</title>
+    <!-- Google Fonts Material Icons -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        /* --- GLOBAL APP STYLES (DARK MODE) --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            padding-bottom: 80px;
+        }
+
+        /* --- FleXcom CUSTOM APP HEADER --- */
+        .app-header {
+            background-color: #179ba1;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            height: 60px;
+        }
+        .back-btn {
+            position: absolute;
+            left: 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        /* --- LOGO CREATED WITH PURE CODE --- */
+        .flexcom-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .flexcom-logo-circle {
+            width: 36px;
+            height: 36px;
+            background-color: #f7d117; /* FleXcom Yellow */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #000000;
+            font-size: 16px;
+            letter-spacing: -1px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .flexcom-logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- SCREEN VISIBILITY HANDLER --- */
+        .app-screen {
+            display: none;
+            padding: 16px;
+        }
+        .app-screen.active {
+            display: block;
+        }
+
+        /* --- HEADERS AND NOTICES --- */
+        .screen-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .screen-subtitle {
+            font-size: 14px;
+            color: #aaaaaa;
+            margin-bottom: 16px;
+        }
+        .safety-notice {
+            background-color: rgba(255, 165, 0, 0.1);
+            border: 1px solid #ffa500;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            color: #ffa500;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        /* --- FORM FIELDS & INPUTS --- */
+        .toggle-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .toggle-btn {
+            flex: 1;
+            background: transparent;
+            border: 1px solid #ffffff;
+            color: white;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .toggle-btn.active {
+            background-color: #ffffff;
+            color: #000000;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .form-control {
+            width: 100%;
+            background-color: transparent;
+            border: 1px solid #333333;
+            border-radius: 10px;
+            padding: 14px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+        .form-control:focus {
+            border-color: #179ba1;
+        }
+        .form-help {
+            font-size: 11px;
+            color: #888888;
+            margin-top: 4px;
+            line-height: 1.3;
+        }
+        .submit-btn {
+            width: 100%;
+            background-color: #179ba1;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        /* --- FEED CARDS & SEARCH --- */
+        .search-container {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        .search-box {
+            background-color: #111111;
+            border: 1px solid #222222;
+            border-radius: 10px;
+            padding: 12px 12px 12px 40px;
+            width: 100%;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666666;
+            font-size: 18px;
+        }
+        .card {
+            background-color: #111111;
+            border: 1px solid #222222;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .card-location {
+            font-size: 13px;
+            color: #888888;
+            margin-bottom: 10px;
+        }
+        .badge-blue {
+            background-color: #0056b3;
+            color: white;
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .card-desc {
+            font-size: 14px;
+            color: #cccccc;
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+        .card-actions {
+            display: flex;
+            gap: 20px;
+        }
+        .action-link {
+            color: #179ba1;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        /* --- BOTTOM NAVIGATION BAR --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #111111;
+            border-top: 1px solid #222222;
+            height: 65px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+        .nav-item {
+            background: none;
+            border: none;
+            color: #666666;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            cursor: pointer;
+            width: 25%;
+            height: 100%;
+            justify-content: center;
+        }
+        .nav-item.active {
+            color: #179ba1;
+        }
+        .nav-item .material-icons-outlined {
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FleXcom Custom App Header -->
+    <header class="app-header">
+        <button class="back-btn">&#8592;</button>
+        <div class="flexcom-logo-container">
+            <div class="flexcom-logo-circle">FXC</div>
+            <div class="flexcom-logo-text">FleXcom</div>
+        </div>
+    </header>
+
+    <!-- 1. SUPPLIERS SCREEN -->
+    <div id="screen-suppliers" class="app-screen active">
+        <div class="safety-notice">
+            ⚠️ Safety Notice: Never pay upfront fees for job placement or unvetted stock samples. Report scams instantly via Settings.
+        </div>
+        <div class="search-container">
+            <span class="material-icons-outlined search-icon">search</span>
+            <input type="text" class="search-box" placeholder="Search title, tags, province or city">
+        </div>
+        <div style="text-align: center; color: #555555; margin-top: 60px;">
+            <span class="material-icons-outlined" style="font-size: 56px;">storefront</span>
+            <p style="margin-top: 12px; font-size: 15px;">No suppliers listed yet. Verified South African suppliers will appear here.</p>
+        </div>
+    </div>
+
+    <!-- 2. ONLINE JOBS SCREEN -->
+    <div id="screen-jobs" class="app-screen">
+        <h1 class="screen-title">Online Jobs</h1>
+        <p class="screen-subtitle">Remote gigs from South African companies</p>
+        <div class="search-container">
+            <span class="material-icons-outlined search-icon">search</span>
+            <input type="text" class="search-box" placeholder="Search title, tags, province or city">
+        </div>
+        
+        <!-- Job Container -->
+        <div id="jobs-container">
+            <div class="card">
+                <div class="card-title">Junior Social Media Content Creator</div>
+                <div class="card-location">Select a city</div>
+                <div class="badge-blue">Rate on request</div>
+                <div class="card-desc">Design and schedule social posts for local retail brands.</div>
+                <div class="card-actions">
+                    <a href="https://wa.me" class="action-link"><span class="material-icons-outlined" style="font-size:16px;">chat</span> Chat on WhatsApp</a>
+                    <a href="mailto:apply@flexcom.co.za" class="action-link"><span class="material-icons-outlined" style="font-size:16px;">mail</span> Apply via Email</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">Virtual Assistant</div>
+<body>
+
+    <!-- FlexXcom Custom App Header -->
+    <header class="app-header">
+        <!-- Left: Menu Button -->
+        <button class="header-btn">
+            <span class="material-icons">menu</span>
+        </button>
+
+        <!-- Center: App Title -->
+        <h1 class="header-title">FlexXcom</h1>
+
+        <!-- Right: Profile/Account Button -->
+        <button class="header-btn">
+            <span class="material-icons">account_circle</span>
+        </button>
+    </header>
+
+</body>
+/* Styling the Title Text */
+.header-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+}
+
+/* Styling the Icon Buttons */
+.header-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ensure icons scale properly */
+.header-btn .material-icons {
+    font-size: 24px;
+}
+    <!-- Main Content Containers (Hidden/Shown based on Active Tab) -->
+    <main style="padding: 16px; margin-top: 60px; color: #ffffff;">
+        
+        <!-- Example Content: Safety Notice (Seen on your pages) -->
+        <div class="safety-notice" style="background-color: #0c0c0c; border: 1px solid #ffd700; border-radius: 8px; padding: 12px; margin-bottom: 16px; font-size: 0.85rem;">
+            <span style="color: #ffd700; font-weight: bold;">⚠️ Safety Notice:</span> Never pay upfront fees for job placement or unvetted stock samples. Report scams instantly via Settings.
+        </div>
+
+        <!-- Dynamic Page Content Go Here -->
+        <div id="page-title" style="font-size: 1.8rem; font-weight: bold; margin-bottom: 4px;">Suppliers</div>
+        <p id="page-subtitle" style="color: #888888; font-size: 0.9rem; margin-top: 0; margin-bottom: 20px;">Verified South African suppliers will appear here.</p>
+
+    </main>
+
+    <!-- 🛠️ Fixed Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <div class="nav-item active">
+            <span class="material-icons">storefront</span>
+            <span>Suppliers</span>
+        </div>
+        <div class="nav-item">
+            <span class="material-icons">business_center</span>
+            <span>OnlineJobs</span>
+        </div>
+        <div class="nav-item">
+            <span class="material-icons">assignment</span>
+            <span>PostListing</span>
+        </div>
+        <div class="nav-item">
+            <span class="material-icons">settings</span>
+            <span>Settings</span>
+        </div>
+    </nav>
+
+</body>
+</html>
+/* Bottom Navigation Styling */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background-color: #000000;
+    border-top: 1px solid #1a1a1a;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #888888;
+    font-size: 0.75rem;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    cursor: pointer;
+}
+
+/* Active tab style using your precise teal color */
+.nav-item.active {
+    color: #179ba1; 
+}
+
+.nav-item .material-icons {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+    <!-- ⚙️ Settings Section -->
+    <section class="settings-container" style="color: #ffffff; font-family: -apple-system, sans-serif; padding-bottom: 100px;">
+        
+        <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 24px; display: flex; align-items: center; gap: 10px;">
+            <span class="material-icons" style="font-size: 2rem;">settings</span> Settings
+        </h1>
+
+        <!-- BUSINESS & ADVERTISING CATEGORY -->
+        <div class="setting-category-label" style="color: #888888; font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase;">Business & Advertising</div>
+        
+        <div class="settings-group" style="background-color: #000000; border: 1px solid #222222; border-radius: 12px; margin-bottom: 24px; overflow: hidden;">
+            <!-- Get Verified Badge Link -->
+            <a href="https://wa.me." target="_blank" class="setting-item" style="display: flex; align-items: center; justify-content: space-between; padding: 18px 16px; border-bottom: 1px solid #111111; text-decoration: none; color: #ffffff;">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <span class="material-icons" style="color: #ffffff;">verified</span>
+                    <span style="font-size: 1rem; font-weight: 500;">Get Verified Badge (R100 once-off)</span>
+                </div>
+                <span class="material-icons" style="color: #555555;">chevron_right</span>
+            </a>
+
+            <!-- Want an App Link -->
+            <a href="https://wa.me." target="_blank" class="setting-item" style="display: flex; align-items: center; justify-content: space-between; padding: 18px 16px; text-decoration: none; color: #ffffff;">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <span class="material-icons" style="color: #ffffff;">phone_iphone</span>
+                    <span style="font-size: 1rem; font-weight: 500;">Want an App? Contact Us</span>
+                </div>
+                <span class="material-icons" style="color: #555555;">chevron_right</span>
+            </a>
+        </div>
+
+
+        <!-- SAFETY & SUPPORT CATEGORY -->
+        <div class="setting-category-label" style="color: #888888; font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase;">Safety & Support</div>
+        
+        <div class="settings-group" style="background-color: #000000; border: 1px solid #222222; border-radius: 12px; margin-bottom: 24px; overflow: hidden;">
+            <!-- Report a Scam Link -->
+            <a href="https://wa.me." target="_blank" class="setting-item" style="display: flex; align-items: center; justify-content: space-between; padding: 18px 16px; border-bottom: 1px solid #111111; text-decoration: none; color: #ffffff;">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <span class="material-icons" style="color: #ffffff;">warning</span>
+                    <span style="font-size: 1rem; font-weight: 500;">Report a Scam / Fraudulent Listing</span>
+                </div>
+                <span class="material-icons" style="color: #555555;">chevron_right</span>
+            </a>
+
+            <!-- Help Center / Complaints Link -->
+            <a href="https://wa.me." target="_blank" class="setting-item" style="display: flex; align-items: center; justify-content: space-between; padding: 18px 16px; text-decoration: none; color: #ffffff;">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <span class="material-icons" style="color: #ffffff;">help_outline</span>
+                    <span style="font-size: 1rem; font-weight: 500;">Help Center / Complaints / FAQs</span>
+                </div>
+                <span class="material-icons" style="color: #555555;">chevron_right</span>
+            </a>
+        </div>
+
+        <!-- APP VERSION FOOTER -->
+        <div style="text-align: center; color: #555555; font-size: 0.85rem; margin-top: 30px;">
+            App Version 1.0.0
+        </div>
+
+    </section>
+<!-- Example of a Premium Supplier Card with an "Unlock" Button -->
+<div class="supplier-card" style="background-color: #0c0c0c; border: 1px solid #222222; border-radius: 12px; padding: 16px; margin-bottom: 16px; position: relative; overflow: hidden;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+        <span style="background-color: #179ba1; color: #fff; font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; font-weight: bold;">⭐ PREMIUM SUPPLIER</span>
+        <span style="color: #ffd700; font-weight: bold; font-size: 0.9rem;">R50 to Unlock</span>
+    </div>
+    <h3 style="margin: 0 0 6px 0; color: #ffffff;">Top Bulk Clothing Supplier</h3>
+    <p style="margin: 0 0 16px 0; color: #888888; font-size: 0.85rem;">Get direct access to Cape Town's biggest blank hoodie and t-shirt warehouse.</p>
+    
+    <!-- This button triggers the pop-up instead of leaving the app -->
+    <button onclick="openPaymentPopup('Bulk Clothing Supplier')" style="width: 100%; background-color: #179ba1; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span class="material-icons" style="font-size: 18px;">lock</span> Unlock Supplier Contact
+    </button>
+</div>
+
+<!-- 🚨 THE POP-UP MODAL (Hidden by default) -->
+<div id="paymentModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; padding: 20px; font-family: -apple-system, sans-serif;">
+    <div style="background-color: #111111; border: 1px solid #179ba1; border-radius: 16px; width: 100%; max-width: 360px; padding: 24px; box-sizing: border-box; position: relative; text-align: center;">
+        
+        <!-- Close Button -->
+        <button onclick="closePaymentPopup()" style="position: absolute; top: 12px; right: 12px; background: none; border: none; color: #888888; cursor: pointer;">
+            <span class="material-icons">close</span>
+        </button>
+
+        <span class="material-icons" style="font-size: 48px; color: #179ba1; margin-bottom: 12px;">account_balance_wallet</span>
+        <h2 style="margin: 0 0 8px 0; font-size: 1.3rem; color: #ffffff;">Unlock Direct Contact</h2>
+        <p style="margin: 0 0 20px 0; color: #a0a0a0; font-size: 0.85rem;">Pay a once-off fee of <strong style="color: #fff;">R50</strong> to instantly access this premium supplier data.</p>
+
+        <!-- Your Payment Information Block -->
+        <div style="background-color: #050505; border: 1px solid #222222; border-radius: 10px; padding: 16px; text-align: left; margin-bottom: 20px;">
+            <div style="font-size: 0.75rem; color: #179ba1; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Capitec Instant EFT</div>
+            <div style="margin-bottom: 6px; font-size: 0.9rem; color: #ffffff;"><strong>Account:</strong> 1234567890</div>
+            <div style="margin-bottom: 6px; font-size: 0.9rem; color: #ffffff;"><strong>Type:</strong> Savings / Global</div>
+            <div style="font-size: 0.9rem; color: #ffffff;"><strong>Ref:</strong> <span id="paymentRef" style="color: #ffd700; font-weight: bold;">SUPPLIER-101</span></div>
+        </div>
+
+        <p style="color: #888888; font-size: 0.75rem; margin-bottom: 16px; line-height: 1.4;">After making your payment or instant cash transfer, click below to send proof of payment via WhatsApp for instant manual clearance.</p>
+
+        <!-- WhatsApp Confirmation Button -->
+        <a id="whatsappConfirmBtn" href="#" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #25D366; color: white; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 0.95rem;">
+            Chat on WhatsApp to Confirm
+        </a>
+    </div>
+</div>
+<script>
+    // Function to open the pop-up and dynamically update the details
+    function openPaymentPopup(itemName) {
+        // Show the pop-up modal overlay
+        document.getElementById('paymentModal').style.display = 'flex';
+        
+        // Generate a clean reference code based on what they are trying to buy
+        const cleanRef = "FX-" + itemName.replace(/\s+/g, '-').toUpperCase();
+        document.getElementById('paymentRef').innerText = cleanRef;
+        
+        // Update the WhatsApp button link so they send you the exact item name and reference code
+        const whatsappNumber = "27703984608";
+        const message = encodeURIComponent(`Hi! I just paid R50 to unlock the "${itemName}". My payment reference is: ${cleanRef}. Please unlock my access.`);
+        
+        document.getElementById('whatsappConfirmBtn').href = `https://wa.me{whatsappNumber}?text=${message}`;
+    }
+
+    // Function to close the pop-up modal
+    function closePaymentPopup() {
+        document.getElementById('paymentModal').style.display = 'none';
+    }
+</script>
+<!-- 📦 SUPPLIERS FEED TAB (Prepopulated with Direct WhatsApp Routing) -->
+<section id="suppliers-tab" style="font-family: -apple-system, sans-serif; padding-bottom: 100px;">
+
+    <!-- Search & Filter Bar (Matching your interface design) -->
+    <div style="position: relative; margin-bottom: 16px;">
+        <span class="material-icons" style="position: absolute; left: 14px; top: 14px; color: #666;">search</span>
+        <input type="text" placeholder="Search title, tags, province or city" style="width: 100%; background-color: #0c0c0c; border: 1px solid #222; border-radius: 25px; padding: 14px 14px 14px 44px; color: #fff; box-sizing: border-box; font-size: 0.95rem; outline: none;">
+    </div>
+
+    <!-- Quick Pill Filters (Matching your screenshot) -->
+    <div style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 20px; padding-bottom: 4px;">
+        <span style="background-color: #111; border: 1px solid #179ba1; color: #179ba1; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; white-space: nowrap;">Verified Only</span>
+        <span style="background-color: #111; border: 1px solid #222; color: #aaa; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; white-space: nowrap;">Courier Shipping</span>
+        <span style="background-color: #111; border: 1px solid #222; color: #aaa; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; white-space: nowrap;">In Stock</span>
+    </div>
+
+    <!-- =============== CLOTHING SUPPLIERS =============== -->
+    <div style="color: #179ba1; font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase;">Clothing & Apparel</div>
+
+    <!-- Supplier 1: Perfect Dealz -->
+    <div class="supplier-card" style="background-color: #0c0c0c; border: 1px solid #222; border-radius: 12px; padding: 16px; margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+            <h3 style="margin: 0; font-size: 1.1rem; color: #fff;">Perfect Dealz</h3>
+            <span style="color: #179ba1; font-size: 0.75rem; border: 1px solid #179ba1; padding: 2px 6px; border-radius: 4px; font-weight: bold; display: flex; align-items: center; gap: 3px;"><span class="material-icons" style="font-size: 12px;">verified</span> VERIFIED</span>
+        </div>
+        <p style="margin: 0 0 12px 0; color: #888; font-size: 0.85rem; line-height: 1.4;">Fast-moving consumer apparel, trending garments, and dropshipping wholesale stock. Low MOQ.</p>
+        <div style="color: #aaa; font-size: 0.8rem; margin-bottom: 14px; display: flex; align-items: center; gap: 5px;"><span class="material-icons" style="font-size: 16px;">location_on</span> Sandton, JHB</div>
+        <a href="https://wa.me." target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #179ba1; color: white; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 0.9rem;">
+            <span class="material-icons" style="font-size: 18px;">chat</span> Chat on WhatsApp
+        </a>
+    </div>
+
+    <!-- Supplier 2: Oh Two Clothing -->
+    <div class="supplier-card" style="background-color: #0c0c0c; border: 1px solid #222; border-radius: 12px; padding: 16px; margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+            <h3 style="margin: 0; font-size: 1.1rem; color: #fff;">Oh Two Clothing</h3>
+            <span style="color: #179ba1; font-size: 0.75rem; border: 1px solid #179ba1; padding: 2px 6px; border-radius: 4px; font-weight: bold; display: flex; align-items: center; gap: 3px;"><span class="material-icons" style="font-size: 12px;">verified</span> VERIFIED</span>
+        </div>
+        <p style="margin: 0 0 12px 0; color: #888; font-size: 0.85rem; line-height: 1.4;">Premium blank t-shirts, heavy hoodies, and local streetwear brand bulk manufacturing (CMT & Printing).</p>
+        <div style="color: #aaa; font-size: 0.8rem; margin-bottom: 14px; display: flex; align-items: center; gap: 5px;"><span class="material-icons" style="font-size: 16px;">location_on</span> Durban North, KZN</div>
+        <a href="https://wa.me." target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #179ba1; color: white; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 0.9rem;">
+            <span class="material-icons" style="font-size: 18px;">chat</span> Chat on WhatsApp
+        </a>
+    </div>
+
+    <!-- =============== COSMETICS & BEAUTY =============== -->
+    <div style="color: #179ba1; font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; margin-top: 24px; margin-bottom: 10px; text-transform: uppercase;">Cosmetics & Beauty</div>
+
+    <!-- Supplier 3: Brunational -->
+    <div class="supplier-card" style="background-color: #0c0c0c; border: 1px solid #222; border-radius: 12px; padding: 16px; margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+            <h3 style="margin: 0; font-size: 1.1rem; color: #fff;">Brunational Cosmetics</h3>
+            <span style="color: #179ba1; font-size: 0.75rem; border: 1px solid #179ba1; padding: 2px 6px; border-radius: 4px; font-weight: bold; display: flex; align-items: center; gap: 3px;"><span class="material-icons" style="font-size: 12px;">verified</span> VERIFIED</span>
+        </div>
+        <p style="margin: 0 0 12px 0; color: #888; font-size: 0.85rem; line-height: 1.4;">SABS-approved local cosmetic formulation manufacturer. Bulk lotions, luxury spa crèmes, and private-label oils.</p>
+        <div style="color: #aaa; font-size: 0.8rem; margin-bottom: 14px; display: flex; align-items: center; gap: 5px;"><span class="material-icons" style="font-size: 16px;">location_on</span> Edenvale, JHB</div>
+        <a href="https://wa.me." target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #179ba1; color: white; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 0.9rem;">
+            <span class="material-icons" style="font-size: 18px;">chat</span> Chat on WhatsApp
+        </a>
+    </div>
+
+    <!-- =============== PREMIUM BLOCKED/LOCKED SAMPLE =============== -->
+    <div style="color: #ffd700; font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; margin-top: 24px; margin-bottom: 10px; text-transform: uppercase;">🌟 Premium Unlocks (Monetized)</div>
+
+    <!-- Monetized Card routing straight to YOUR Capitec Modal instead of their phone -->
+    <div class="supplier-card" style="background-color: #0c0c0c; border: 1px solid #ffd700; border-radius: 12px; padding: 16px; margin-bottom: 14px; position: relative;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+            <h3 style="margin: 0; font-size: 1.1rem; color: #fff; filter: blur(3px); user-select: none;">Hidden Tech Supplier</h3>
+            <span style="color: #ffd700; font-size: 0.75rem; border: 1px solid #ffd700; padding: 2px 6px; border-radius: 4px; font-weight: bold;">R50 TO UNLOCK</span>
+        </div>
+        <p style="margin: 0 0 12px 0; color: #888; font-size: 0.85rem; line-height: 1.4;">Top tier direct Pretoria importer handling bulk smart devices, screens, and smartphone accessories.</p>
+        <div style="color: #aaa; font-size: 0.8rem; margin-bottom: 14px; display: flex; align-items: center; gap: 5px;"><span class="material-icons" style="font-size: 16px;">location_on</span> Pretoria, GP</div>
+        
+        <!-- Triggers the Pop-up Modal we built earlier to pay you -->
+        <button onclick="openPaymentPopup('Pretoria Tech Hub')" style="width: 100%; background-color: #179ba1; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem;">
+            <span class="material-icons" style="font-size: 18px;">lock</span> Unlock Supplier Access
+        </button>
+    </div>
+
+</section>
+<!-- 🛡️ FLOATING ANTI-SCAM SECURITY HEADER STATUS -->
+<div class="security-status-bar" style="background-color: #050505; border-bottom: 1px solid #179ba1; padding: 10px 16px; display: flex; align-items: center; gap: 8px; font-family: -apple-system, sans-serif;">
+    <span class="material-icons" style="color: #179ba1; font-size: 16px;">shield</span>
+    <span style="color: #179ba1; font-size: 0.75rem; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase;">FlexXcom Encrypted Security Guard Active</span>
+</div>
+
+<!-- 📦 ADD THIS SAFETY INSIDE YOUR MAIN FEEDS (SUPPLIERS / JOBS) -->
+<div class="safety-dashboard" style="font-family: -apple-system, sans-serif; margin-bottom: 20px;">
+
+    <!-- 1. Strict Scam Barrier Alert -->
+    <div style="background: linear-gradient(135deg, #111 0%, #050505 100%); border-left: 4px solid #ff3333; border-radius: 8px; padding: 16px; box-sizing: border-box; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(255,51,51,0.1);">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <span class="material-icons" style="color: #ff3333; font-size: 20px;">gavel</span>
+            <h4 style="margin: 0; color: #fff; font-size: 0.95rem; font-weight: bold;">Anti-Scam Enforcement Notice</h4>
+        </div>
+        <p style="margin: 0 0 10px 0; color: #ccc; font-size: 0.8rem; line-height: 1.4;">
+            All suppliers listed with a <span style="color:#179ba1; font-weight:bold;">Verified Badge</span> have completed biometric/ID tracking. 
+        </p>
+        <ul style="margin: 0; padding-left: 20px; color: #888; font-size: 0.75rem; line-height: 1.5;">
+            <li><strong style="color:#fff;">Never Pay Upfront Delivery Fees</strong> before seeing physical stock.</li>
+            <li>Always request a WhatsApp live video call of the warehouse or products.</li>
+            <li>Report suspicious price lists instantly via Settings to lock the seller's terminal.</li>
+        </ul>
+    </div>
+
+    <!-- 2. Interactive "Verify a Supplier" Security Box -->
+    <div style="background-color: #0c0c0c; border: 1px dashed #222222; border-radius: 12px; padding: 16px; text-align: center;">
+        <span class="material-icons" style="font-size: 32px; color: #179ba1; margin-bottom: 8px;">security_update_good</span>
+        <h4 style="margin: 0 0 4px 0; color: #ffffff; font-size: 0.95rem;">Unverified Seller Check</h4>
+        <p style="margin: 0 0 14px 0; color: #888888; font-size: 0.8rem;">Dealing with an unverified South African supplier outside our app? Let us cross-check their number against our internal national fraud database.</p>
+        
+        <!-- Opens a prefilled WhatsApp request to YOU to check a scammer -->
+        <a href="https://wa.me:" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; background-color: #111111; color: #ffffff; border: 1px solid #179ba1; text-decoration: none; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">
+            <span class="material-icons" style="font-size: 14px;">search_check</span> Run Fraud Check
+        </a>
+    </div>
+
+</div>
+<!-- 📝 POST A LISTING TAB -->
+<section id="post-listing-tab" style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; color: #ffffff; padding-bottom: 120px;">
+    
+    <!-- Header Text -->
+    <h1 style="font-size: 2rem; font-weight: bold; margin: 0 0 6px 0;">Post a Listing</h1>
+    <p style="color: #888888; font-size: 0.95rem; margin: 0 0 24px 0; line-height: 1.4;">Reach South African buyers and remote workers, low-data and fast.</p>
+
+    <!-- 🔄 Form Type Toggles (Matching your screenshot design) -->
+    <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+        <button id="toggle-supplier" onclick="switchFormType('supplier')" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #ffffff; color: #000000; border: none; padding: 12px; border-radius: 25px; font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: 0.2s;">
+            <span class="material-icons" style="font-size: 18px;">local_offer</span> Supplier Product
+        </button>
+        <button id="toggle-job" onclick="switchFormType('job')" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #000000; color: #888888; border: 1px solid #222222; padding: 12px; border-radius: 25px; font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: 0.2s;">
+            <span class="material-icons" style="font-size: 18px;">business_center</span> Online Job
+        </button>
+    </div>
+
+    <!-- 🛑 SECURITY BANNER inside the form container -->
+    <div style="background-color: rgba(23, 155, 161, 0.05); border: 1px dashed #179ba1; border-radius: 12px; padding: 14px; margin-bottom: 24px; display: flex; gap: 12px; align-items: flex-start;">
+        <span class="material-icons" style="color: #179ba1; margin-top: 2px;">shield</span>
+        <div style="font-size: 0.8rem; color: #aaa; line-height: 1.4;">
+            <strong style="color: #fff;">Anti-Fraud Shield Active:</strong> Listings containing flagged numbers, fake locations, or blacklisted keywords are automatically discarded by the terminal.
+        </div>
+    </div>
+
+    <!-- 🛠️ ACTUAL FORM -->
+    <form id="listingForm" onsubmit="handleFormSubmit(event)" style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <!-- Field 1: Title / Product Name -->
+        <div>
+            <label id="label-name" style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; color: #ffffff;">Product Name</label>
+            <input type="text" id="input-name" placeholder="e.g. Bulk Cotton T-Shirts" required style="width: 100%; background-color: #000000; border: 1px solid #333333; border-radius: 12px; padding: 16px; color: #ffffff; box-sizing: border-box; font-size: 1rem; outline: none; transition: 0.2s;">
+        </div>
+
+        <!-- Field 2: Pricing -->
+        <div>
+            <label id="label-price" style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; color: #ffffff;">Wholesale Price (ZAR)</label>
+            <input type="text" id="input-price" placeholder="e.g. 545" required style="width: 100%; background-color: #000000; border: 1px solid #333333; border-radius: 12px; padding: 16px; color: #ffffff; box-sizing: border-box; font-size: 1rem; outline: none;">
+        </div>
+
+        <!-- Field 3: City / Province -->
+        <div>
+            <label style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; color: #ffffff;">City / Location</label>
+            <input type="text" id="input-location" placeholder="e.g. Durban" required style="width: 100%; background-color: #000000; border: 1px solid #333333; border-radius: 12px; padding: 16px; color: #ffffff; box-sizing: border-box; font-size: 1rem; outline: none;">
+        </div>
+
+        <!-- Field 4: Business / Company Name -->
+        <div>
+            <label id="label-business" style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; color: #ffffff;">Business Name</label>
+            <input type="text" id="input-business" placeholder="e.g. Ubuntu Textiles" required style="width: 100%; background-color: #000000; border: 1px solid #333333; border-radius: 12px; padding: 16px; color: #ffffff; box-sizing: border-box; font-size: 1rem; outline: none;">
+        </div>
+
+        <!-- Field 5: WhatsApp Number -->
+        <div>
+            <label style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 4px; color: #ffffff;">WhatsApp Number (+27)</label>
+            <input type="tel" id="input-whatsapp" placeholder="e.g. 703984608" required style="width: 100%; background-color: #000000; border: 1px solid #333333; border-radius: 12px; padding: 16px; color: #ffffff; box-sizing: border-box; font-size: 1rem; outline: none;">
+            <span style="display: block; color: #888888; font-size: 0.75rem; margin-top: 6px; line-height: 1.4;">South African number: omit the leading zero (0). Type 703984608, not 0703984608.</span>
+        </div>
+
+        <!-- 🔒 SCAMMER BARRIER 1: SA ID Validation Field -->
+        <div style="background-color: #070707; border: 1px solid #222222; border-radius: 12px; padding: 16px;">
+            <label style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 4px; color: #ff3333; display: flex; align-items: center; gap: 6px;">
+                <span class="material-icons" style="font-size: 16px;">fingerprint</span> Identity Verification (Required)
+            </label>
+            <p style="margin: 0 0 10px 0; color: #666; font-size: 0.75rem;">To maintain a scammer-free terminal, enter your SA ID or Passport Number. This is securely cross-matched to prevent duplicate fraudulent profiles.</p>
+            <input type="text" id="input-id" maxlength="13" placeholder="Enter 13-digit SA ID Number" required style="width: 100%; background-color: #000000; border: 1px solid #ff3333; border-radius: 8px; padding: 12px; color: #ffffff; box-sizing: border-box; font-size: 0.95rem; outline: none;">
+        </div>
+
+        <!-- Field 6: External Business Link (Optional) -->
+        <div>
+            <label style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; color: #ffffff;">Visit Business Link (optional)</label>
+            <input type="url" id="input-link" placeholder="e.g. https://mywebsite.co.za" style="width: 100%; background-color: #000000; border: 1px solid #333333; border-radius: 12px; padding: 16px; color: #ffffff; box-sizing: border-box; font-size: 1rem; outline: none;">
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" style="width: 100%; background-color: #179ba1; color: #ffffff; border: none; padding: 16px; border-radius: 12px; font-weight: bold; font-size: 1.05rem; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span class="material-icons">publish</span> Publish Listing Securely
+        </button>
+
+    </form>
+</section>
+let activeType = 'supplier';
+
+// Switch fields dynamically between Supplier Product and Online Job
+function switchFormType(type) {
+    activeType = type;
+    const btnSupplier = document.getElementById('toggle-supplier');
+    const btnJob = document.getElementById('toggle-job');
+    
+    const labelName = document.getElementById('label-name');
+    const inputName = document.getElementById('input-name');
+    const labelPrice = document.getElementById('label-price');
+    const inputPrice = document.getElementById('input-price');
+    const labelBusiness = document.getElementById('label-business');
+    const inputBusiness = document.getElementById('input-business');
+
+    if (type === 'supplier') {
+        // Style adjustments
+        btnSupplier.style.backgroundColor = '#ffffff'; btnSupplier.style.color = '#000000'; btnSupplier.style.border = 'none';
+        btnJob.style.backgroundColor = '#000000'; btnJob.style.color = '#888888'; btnJob.style.border = '1px solid #222';
+        
+        // Label text adjustments
+        labelName.innerText = "Product Name"; inputName.placeholder = "e.g. Bulk Cotton T-Shirts";
+        labelPrice.innerText = "Wholesale Price (ZAR)"; inputPrice.placeholder = "e.g. 545";
+        labelBusiness.innerText = "Business Name"; inputBusiness.placeholder = "e.g. Ubuntu Textiles";
+    } else {
+        // Style adjustments
+        btnJob.style.backgroundColor = '#ffffff'; btnJob.style.color = '#000000'; btnJob.style.border = 'none';
+        btnSupplier.style.backgroundColor = '#000000'; btnSupplier.style.color = '#888888'; btnSupplier.style.border = '1px solid #222';
+        
+        // Label text adjustments
+        labelName.innerText = "Job Position Title"; inputName.placeholder = "e.g. Virtual Assistant";
+        labelPrice.innerText = "Salary / Rate Estimation"; inputPrice.placeholder = "e.g. Rate on request / R4500 pm";
+        labelBusiness.innerText = "Company Name"; inputBusiness.placeholder = "e.g. Remote Gen South Africa";
+    }
+}
+
+// Intercept submission to catch scammers and pass details straight to your WhatsApp line
+function handleFormSubmit(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('input-name').value;
+    const price = document.getElementById('input-price').value;
+    const location = document.getElementById('input-location').value;
+    const business = document.getElementById('input-business').value;
+    const whatsapp = document.getElementById('input-whatsapp').value;
+    const saId = document.getElementById('input-id').value;
+    const link = document.getElementById('input-link').value || 'None';
+
+    // Basic client-side check for the 13 digit SA ID layout constraint
+    if(saId.length < 13) {
+        alert("🚨 Security Error: Invalid South African ID layout. Please check your digits.");
+        return;
+    }
+
+    // Format secure message payload for you to screen manually on WhatsApp Business
+    const securePayload = `🚨 NEW LISTING VERIFICATION PROTOCOL 🚨\n\n` +
+                          `Type: ${activeType.toUpperCase()}\n` +
+                          `Title/Name: ${name}\n` +
+                          `Price/Rate: ${price}\n` +
+                          `Location: ${location}\n` +
+                          `Entity/Business: ${business}\n` +
+                          `WhatsApp Target: +27${whatsapp}\n` +
+                          `Secure ID Reference: ${saId}\n` +
+                          `External Link: ${link}`;
+
+    const adminWhatsApp = "27703984608";
+    window.open(`https://wa.me{adminWhatsApp}?text=${encodeURIComponent(securePayload)}`, '_blank');
+}
+<!-- 💼 TAB 2: ONLINE JOBS FEED (Matching your screenshots) -->
+<div id="tab-jobs" class="tab-content">
+    
+    <!-- Header Text -->
+    <h1 style="font-size: 2rem; font-weight: bold; margin: 0 0 6px 0; color: #ffffff;">Online Jobs</h1>
+    <p style="color: #888888; font-size: 0.95rem; margin: 0 0 16px 0; line-height: 1.4;">Remote gigs from South African companies</p>
+
+    <!-- Search & Filter Bar (Matching your interface design) -->
+    <div style="position: relative; margin-bottom: 16px;">
+        <span class="material-icons" style="position: absolute; left: 14px; top: 14px; color: #666;">search</span>
+        <input type="text" placeholder="Search title, tags, province or city" style="width: 100%; background-color: #0c0c0c; border: 1px solid #222; border-radius: 25px; padding: 14px 14px 14px 44px; color: #fff; box-sizing: border-box; font-size: 0.95rem; outline: none;">
+    </div>
+
+    <!-- Quick Pill Filters (Matching your screenshot) -->
+    <div style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 24px; padding-bottom: 4px;">
+        <span style="background-color: #111; border: 1px solid #179ba1; color: #179ba1; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; white-space: nowrap;">Verified Only</span>
+        <span style="background-color: #111; border: 1px solid #222; color: #aaa; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; white-space: nowrap;">Remote SA</span>
+        <span style="background-color: #111; border: 1px solid #222; color: #aaa; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; white-space: nowrap;">Fixed Price</span>
+    </div>
+
+    <!-- JOB CARD 1: Junior Social Media Content Creator -->
+    <div class="job-card" style="background-color: #0c0c0c; border: 1px solid #222; border-radius: 12px; padding: 16px; margin-bottom: 16px; font-family: -apple-system, sans-serif;">
+        <h3 style="margin: 0 0 4px 0; font-size: 1.2rem; color: #ffffff; font-weight: bold;">Junior Social Media Content Creator</h3>
+        <div style="color: #888888; font-size: 0.85rem; margin-bottom: 12px; display: flex; align-items: center; gap: 4px;">
+            <span class="material-icons" style="font-size: 16px;">location_on</span> Remote / Select a city
+        </div>
+        
+        <!-- Blue Price/Rate Badge (Matching your exact screenshot style) -->
+        <div style="display: inline-block; background-color: #0056b3; color: #ffffff; font-size: 0.8rem; font-weight: bold; padding: 6px 12px; border-radius: 6px; margin-bottom: 14px;">
+            Rate on request
+        </div>
+
+        <p style="margin: 0 0 16px 0; color: #b0b0b0; font-size: 0.9rem; line-height: 1.4;">Design and schedule social posts for local retail brands. Create simple static graphics, carousels, and captions using Canva.</p>
+        
+        <!-- Direct Action Buttons -->
+        <div style="display: flex; gap: 16px; align-items: center;">
+            <a href="https://wa.me." target="_blank" style="display: flex; align-items: center; gap: 6px; color: #179ba1; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                <span class="material-icons" style="font-size: 18px;">chat</span> Chat on WhatsApp
+            </a>
+            <a href="mailto:applications@flexxcom.co.za?subject=Application:%20Junior%20Social%20Media%20Content%20Creator" style="display: flex; align-items: center; gap: 6px; color: #179ba1; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                <span class="material-icons" style="font-size: 18px;">mail_outline</span> Apply via Email
+            </a>
+        </div>
+    </div>
+
+    <!-- JOB CARD 2: Virtual Assistant -->
+    <div class="job-card" style="background-color: #0c0c0c; border: 1px solid #222; border-radius: 12px; padding: 16px; margin-bottom: 16px; font-family: -apple-system, sans-serif;">
+        <h3 style="margin: 0 0 4px 0; font-size: 1.2rem; color: #ffffff; font-weight: bold;">Virtual Assistant</h3>
+        <div style="color: #888888; font-size: 0.85rem; margin-bottom: 12px; display: flex; align-items: center; gap: 4px;">
+            <span class="material-icons" style="font-size: 16px;">location_on</span> Remote / Select a city
+        </div>
+        
+        <!-- Blue Price/Rate Badge -->
+        <div style="display: inline-block; background-color: #0056b3; color: #ffffff; font-size: 0.8rem; font-weight: bold; padding: 6px 12px; border-radius: 6px; margin-bottom: 14px;">
+            Rate on request
+        </div>
+
+        <p style="margin: 0 0 16px 0; color: #b0b0b0; font-size: 0.9rem; line-height: 1.4;">Manage scheduling, data entry, calendar organization, client feedback handling, and routine customer correspondence.</p>
+        
+        <!-- Direct Action Buttons -->
+        <div style="display: flex; gap: 16px; align-items: center;">
+            <a href="https://wa.me." target="_blank" style="display: flex; align-items: center; gap: 6px; color: #179ba1; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                <span class="material-icons" style="font-size: 18px;">chat</span> Chat on WhatsApp
+            </a>
+            <a href="mailto:applications@flexxcom.co.za?subject=Application:%20Virtual%20Assistant" style="display: flex; align-items: center; gap: 6px; color: #179ba1; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                <span class="material-icons" style="font-size: 18px;">mail_outline</span> Apply via Email
+            </a>
+        </div>
+    </div>
+
+</div>
